@@ -1,3 +1,18 @@
+apiVersion: getambassador.io/v2
+kind:  Module
+metadata:
+  name:  ambassador
+spec:
+# Use ambassador_id only if you are using multiple instances of Emissary-ingress in the same cluster.
+# See below for more information.
+  config:
+  # Use the items below for config fields
+    use_proxy_proto: true
+    enable_grpc_web: true
+    enable_grpc_http11_bridge: true
+    diagnostics:
+      enabled: true
+---
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
@@ -7,7 +22,12 @@ spec:
   grpc: True
   prefix: /greeter.Greeter/
   rewrite: /greeter.Greeter/
-  service: greeter:9090
+  service: greeter.default:9090
+  timeout_ms: 4000
+  idle_timeout_ms: 500000
+  connect_timeout_ms: 2000
+  bypass_auth: true
+  dns_type: logical_dns
   cors:
     origins:
     - "*"
@@ -20,7 +40,7 @@ spec:
     headers: 
     - keep-alive
     - user-agent
-    - cache-control,
+    - cache-control
     - content-type
     - content-transfer-encoding
     - custom-header-1
@@ -39,7 +59,7 @@ kind: Host
 metadata:
   name: example-host
 spec:
-  hostname: nginx-5d4d599d6c-6kdlc
+  hostname: localhost
   acmeProvider:
     authority: none
   requestPolicy:

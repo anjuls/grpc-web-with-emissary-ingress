@@ -1,7 +1,7 @@
 const  { HelloRequest, HelloReply} = require('./greeter_pb.js');
 const  { GreeterClient } = require('./greeter_grpc_web_pb.js');
 
-const client = new GreeterClient('http://emissary-ingress.emissary.svc.cluster.local:80');
+const client = new GreeterClient('http://localhost');
 // console.log(client)
 
 var request = new HelloRequest();

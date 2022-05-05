@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ["package.json", "server.js", "./"]
 
-RUN npm install --no-cache
+RUN npm install --no-cache --production
 
 COPY . .
 
