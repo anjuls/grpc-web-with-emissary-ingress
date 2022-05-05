@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeter
+  template:
+    metadata:
+      labels:
+        app: greeter
+    spec:
+      containers:
+      - name: greeter
+        image: grpc-server:1.0
+        ports:
+        - containerPort: 9090
+          name: http
+          protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: greeter
+spec:
+  selector:
+    app: greeter
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 9090
+    targetPort: 9090
+---

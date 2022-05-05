@@ -1,0 +1,47 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: grpc-greeter
+spec:
+  hostname: "*"
+  grpc: True
+  prefix: /greeter.Greeter/
+  rewrite: /greeter.Greeter/
+  service: greeter:9090
+  cors:
+    origins:
+    - "*"
+    methods: 
+    - POST
+    - GET
+    - OPTIONS
+    - PUT
+    - DELETE
+    headers: 
+    - keep-alive
+    - user-agent
+    - cache-control,
+    - content-type
+    - content-transfer-encoding
+    - custom-header-1
+    - x-accept-content-transfer-encoding
+    - x-accept-response-streaming
+    - x-user-agent
+    - x-grpc-web
+    - grpc-timeout
+    exposed_headers: 
+    - custom-header-1
+    - grpc-status
+    - grpc-message
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: example-host
+spec:
+  hostname: nginx-5d4d599d6c-6kdlc
+  acmeProvider:
+    authority: none
+  requestPolicy:
+    insecure:
+      action: Route
